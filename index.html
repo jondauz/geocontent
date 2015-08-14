@@ -1,0 +1,23 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Geo Content Plugin</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <h2 data-geo-content="Welcome to %%region_name%%!">Welcome</h2>
+    <h3>Welcome again</h3>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/geocontent.js"></script>
+    <script>
+      $(document).ready(function(){
+        var geoContent = new GeoContent({
+          mygeourl: 'https://pin.berniesanders.com/json/8.8.8.8'
+        });
+      });
+    </script>
+ </body>
+</html>
