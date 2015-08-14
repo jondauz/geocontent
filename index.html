@@ -6,10 +6,20 @@
     <title>Geo Content Plugin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      h2 {
+        text-align: center;
+        opacity: 0;
+        padding: 15% 0;
+      }
+    </style>
   </head>
   <body>
-    <h2 data-geo-content="Welcome to %%region_name%%!">Welcome</h2>
-    <h3>Welcome again</h3>
+    
+    <div class="container">
+      <h2 data-geo-content="How's the weather in %%region_name%%?">How's the weather?</h2>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/geocontent.js"></script>
     <script>

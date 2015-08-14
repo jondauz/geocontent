@@ -6,7 +6,7 @@
   // Define our constructor 
   this.GeoContent = function() {
 
-  	var geoObject = this;
+   	var geoObject = this;
   	this.geoContent = null,
   	geoObject.obe;
 
@@ -23,9 +23,9 @@
       geoObject.options = extendDefaults(geoObject.options, arguments[0]);
     }
 
-  	if(geoObject.options&&geoObject.options.ip===null&&geoObject.options.ip!=='') {
-  		
-  		$.ajax({
+  	if(geoObject.options&&(geoObject.options.ip===null||geoObject.options.ip==='')) {
+  	
+    	$.ajax({
   			url: geoObject.getIpUrl
   		}).done(function(ip){	
   		
@@ -43,18 +43,18 @@
   }
 
   function initGeoContent(geoObject) {
-  	$.ajax({
+   	$.ajax({
 			url: geoObject.options.mygeourl + '/' + geoObject.options.ip
 		}).done(function(result){	
 		
-			geoObject.geoContent = result;
-			updateContent(geoObject);
+			geoObject.geoContent = result;	
+  		updateContent(geoObject);
 		
 		});
   }
 
   function updateContent(geoObject) {
-  	
+     
   	var contentToChange = $('[data-geo-content]');
   	
   	$.each(contentToChange, function(index, value){
@@ -68,10 +68,12 @@
   		}
   		else if(currentData.indexOf('%%region_name%%')>0) {
   			newText = currentData.replace('%%region_name%%', geoObject.geoContent.region_name);
+  		} 
+      
+      if(newText!=='') {
+  		  current.text(newText);
   		}
-  	
-  		current.text(newText);
-  		current.css('opacity','1');
+      current.css('opacity','1');
   	
   	});
   }
