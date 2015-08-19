@@ -1,14 +1,14 @@
 ;(function($) {
 
 	// Hide content that will be changed
-	$('[data-geo-content]').css('opacity','0');
+	var geoContentElems = $('[data-geo-content]');
+  geoContentElems.css('opacity','0');
 
   // Define our constructor 
   this.GeoContent = function() {
 
-   	var geoObject = this;
-  	this.geoContent = null,
-  	geoObject.obe;
+  	var geoObject = this;
+  	this.geoContent = null;
 
   	geoObject.getIpUrl = "http://icanhazip.com/";
 
@@ -16,14 +16,16 @@
     geoObject.options = {
       mygeourl: 'https://freegeoip.net/json',
     	ip: null,
+      exclude: false,
+      regions: []  
     }
 
     // Create options by extending defaults with the passed in arugments
     if (arguments[0] && typeof arguments[0] === "object") {
-      geoObject.options = extendDefaults(geoObject.options, arguments[0]);
+      $.extend(geoObject.options, arguments[0]);
     }
 
-  	if(geoObject.options&&(geoObject.options.ip===null||geoObject.options.ip==='')) {
+    if(geoObject.options&&(geoObject.options.ip===null||geoObject.options.ip==='')) {
   	
     	$.ajax({
   			url: geoObject.getIpUrl
@@ -32,60 +34,124 @@
   			geoObject.options.ip = ip;
   			initGeoContent(geoObject);
   		
-  		});
+  		}).error(function(){
+
+        console.error('Unable to get IP.')
+        showElements();
+
+      });
 
   	} else {
-  	
-  		initGeoContent(geoObject);
+
+   		initGeoContent(geoObject);
   	
   	}
 
   }
 
   function initGeoContent(geoObject) {
-   	$.ajax({
+ 
+    $.ajax({
 			url: geoObject.options.mygeourl + '/' + geoObject.options.ip
 		}).done(function(result){	
-		
-			geoObject.geoContent = result;	
-  		updateContent(geoObject);
-		
-		});
+		  
+      geoObject.geoContent = result;
+
+      if(geoObject.options.exclude) {
+        updateExcludedContent(geoObject);
+      } else {
+        updateContent(geoObject);
+      }
+
+		}).error(function(error){
+     
+      console.error('Unable to get geolocate.')
+      showElements();
+    
+    });
+ 
+  }
+
+  function updateExcludedContent(geoObject) {
+
+    if(geoObject.options.regions.length==0) {
+      
+      showElements();
+      console.error("Array of regions to exclude can't be empty!");
+    
+    } else {
+
+      if(geoObject.options.regions.indexOf(geoObject.geoContent.region_code)<0) {
+
+        $.each(geoContentElems, function(index, value){
+      
+          var current = $(value),
+            currentData = $(value).data('geo-content'),
+            newText = '';
+          
+          // Change Region Code
+          if(currentData.indexOf('%%region_code%%')>0&&geoObject.geoContent.region_code!=='') {
+            newText = currentData.replace('%%region_code%%', geoObject.geoContent.region_code);
+          }
+          // Chnage Region Name
+          else if(currentData.indexOf('%%region_name%%')>0&&geoObject.geoContent.region_name!=='') {
+            newText = currentData.replace('%%region_name%%', geoObject.geoContent.region_name);
+          } 
+          
+          if(newText!=='') {
+            current.text(newText);
+          }
+          current.css('opacity','1');
+
+        });
+        
+      } else {
+        
+        showElements();
+      
+      }
+    
+    }    
+  
   }
 
   function updateContent(geoObject) {
-     
-  	var contentToChange = $('[data-geo-content]');
-  	
-  	$.each(contentToChange, function(index, value){
-  		
-  		var current = $(value),
-  			currentData = $(value).data('geo-content'),
-  			newText = "";
-  		
-  		if(currentData.indexOf('%%region_code%%')>0) {
-  			newText = currentData.replace('%%region_code%%', geoObject.geoContent.region_code);
-  		}
-  		else if(currentData.indexOf('%%region_name%%')>0) {
-  			newText = currentData.replace('%%region_name%%', geoObject.geoContent.region_name);
-  		} 
+    
+    if(geoObject.options.regions.length==0||geoObject.options.regions.indexOf(geoObject.geoContent.region_code)>=0) {
+
+      $.each(geoContentElems, function(index, value){
+    
+        var current = $(value),
+          currentData = $(value).data('geo-content'),
+          newText = '';
+        
+        // Change Region Code
+        if(currentData.indexOf('%%region_code%%')>0&&geoObject.geoContent.region_code!=='') {
+          newText = currentData.replace('%%region_code%%', geoObject.geoContent.region_code);
+        }
+        // Chnage Region Name
+        else if(currentData.indexOf('%%region_name%%')>0&&geoObject.geoContent.region_name!=='') {
+          newText = currentData.replace('%%region_name%%', geoObject.geoContent.region_name);
+        } 
+        
+        if(newText!=='') {
+          current.text(newText);
+        }
+        current.css('opacity','1');
+
+      });
       
-      if(newText!=='') {
-  		  current.text(newText);
-  		}
-      current.css('opacity','1');
+    } else {
+      showElements();
+    }
+
   	
-  	});
   }
 
-  function extendDefaults(source, properties) {
-    var property;
-    for (property in properties) {
-      if (properties.hasOwnProperty(property)) {
-        source[property] = properties[property];
-      }
-    }
-    return source;
+  function showElements() {
+  
+    geoContentElems.css('opacity','1');
+
   }
 
 }(jQuery));
