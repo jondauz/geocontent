@@ -1,8 +1,17 @@
 ;(function($) {
 
 	// Hide content that will be changed
+<<<<<<< HEAD
 	var geoContentElems = $('[data-geo-content]');
   geoContentElems.css('opacity','0');
+=======
+	var geoContentElems = $('[data-geo-content]').css('opacity','0');
+
+  /// Set up AJAX default values 
+  $.ajaxSetup({
+    timeout: 4000
+  });
+>>>>>>> master
 
   // Define our constructor 
   this.GeoContent = function() {
