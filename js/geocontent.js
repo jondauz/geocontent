@@ -1,41 +1,113 @@
 var geoContent = (function ($) {
 
-    console.log('initialize');
     var geoContent = {};    
 
-    geoContent.defaults = {
-      getipurl:  "http://icanhazip.com/"
+    geoContent.settings = {
+      getipurl:  "http://icanhazip.com/",
+      ip: null,
+      mygeourl: 'https://freegeoip.net/json',
+      location: null,
+      onComplete: null,
     }
+  
+    $.ajaxSetup({
+      timeout: 4000
+    }); 
 
-    
-    geoContent.geoContentImage = function () {
-    
+    geoContent.changeText = function (elemObject) {
+      
+      if(!elemObject.regions) {
+        updateContent(elemObject.element, elemObject.template);
+      }
+      else if(elemObject.regions&&elemObject.regions.indexOf(geoContent.settings.location.region_code)>=0&&(!elemObject.exclude||elemObject.exclude==false)) {
+        updateContent(elemObject.element, elemObject.template);
+      }
+      else if(elemObject.regions&&elemObject.regions.indexOf(geoContent.settings.location.region_code)==-1&&elemObject.exclude==true) {
+        updateContent(elemObject.element, elemObject.template);
+      }
 
+      elemObject.element.css('opacity','1');
+
+    };
+
+    geoContent.changeImage = function() {
+      /* TO-DO: Create Change Image */
     };
 
     geoContent.init = function(options) {
      
+      $.extend(this.settings, options);
       
-      $.extend(this.defaults, options); // <- if no / undefined options are passed extend will simply return the defaults
-
-      //Get IP of current user
-      $.ajax({
-        url: geoContent.defaults.getipurl
-      }).done(function(ip){ 
-
-        console.log(ip);
-        if(options.onComplete) {
-          options.onComplete();
-        }
-        
-      }).error(function(){
-        console.error('Unable to get IP.')
-      });
-
+      if(this.settings.ip) {
+        getLocation();
+      } else {
+        getUserIP();
+      }
 
     };
 
-    return geoContent;
+    function updateContent(elem, template) {
+      
+      var newText = "";
+      // Change Region Code
+      if(template.indexOf('%%region_code%%')>0&&geoContent.settings.location.region_code!=='') {
+        newText = template.replace('%%region_code%%', geoContent.settings.location.region_code);
+      }
+      // Change Region Name
+      else if(template.indexOf('%%region_name%%')>0&&geoContent.settings.location.region_name!=='') {
+        newText = template.replace('%%region_name%%', geoContent.settings.location.region_name);
+      } 
+      
+      if(newText!=='') {
+        elem.text(newText);
+      }
+     
+    }
+
+    function getUserIP() {
+
+      $.ajax({
+        url: geoContent.settings.getipurl
+      }).done(function(ip){ 
+
+        geoContent.settings.ip = ip;
+        getLocation();
+       
+       }).error(function(){
+
+        showError('Unable to get IP.');
+      
+      });
+
+    }
+
+    function getLocation() {
+
+    $.ajax({
+      url: geoContent.settings.mygeourl + '/' + geoContent.settings.ip      
+    }).done(function(location){ 
+
+      geoContent.settings.location = location;
+        
+      if(geoContent.settings.onComplete) {
+        geoContent.settings.onComplete();
+      } else {
+        showError('Missing "onComplete" function');
+      }
+
+    }).error(function(error){
+     
+      showError('Unable to get geolocate.')
+    
+    });
+  
+  }
+
+  function showError(msg) {
+    console.error(msg);
+  }
+
+  return geoContent;
 
 }(jQuery));
 
@@ -47,10 +119,7 @@ var geoContent = (function ($) {
 // 	// Hide content that will be changed
 // 	var geoContentElems = $('[data-geo-content]').css('opacity','0');
 
-//   /// Set up AJAX default values 
-//   $.ajaxSetup({
-//     timeout: 4000
-//   });
+
 
 //   // Define our constructor 
 //   this.GeoContent = function() {

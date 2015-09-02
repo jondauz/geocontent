@@ -1,0 +1,21 @@
+{
+  "name": "GeoContent",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jondauz/geocontent",
+  "authors": [
+    "Jonathan Dauz <jondauz@gmail.com>"
+  ],
+  "description": "Plugin that changes content depending on geolocation",
+  "main": "js/geocontent.js",
+  "dependencies": {
+    "jquery": "~1.10.2"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
