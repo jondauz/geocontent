@@ -20,12 +20,22 @@
       <h2 data-geo-content="How's the weather in %%region_name%%?">How's the weather?</h2>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="js/geocontent.js"></script>
     <script>
+
+      
+
+
       $(document).ready(function(){
-        var geoContent = new GeoContent({
+        
+         geoContent.init({
+          onComplete: function() {
+            geoContent.geoContentImage();
+          }
         });
+
+            
       });
     </script>
  </body>
