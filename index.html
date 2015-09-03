@@ -3,35 +3,67 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Geo Content Plugin</title>
+    <title>GeoContent</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-      h2 {
+      .container {
+        padding-top: 50px;
+      }
+      h2.geo-text {
         text-align: center;
         opacity: 0;
-        padding: 15% 0;
+      }
+      img.geo-image {
+        display: block;
+        margin: 0 auto;
+        opacity: 0;
       }
     </style>
   </head>
   <body>
     
     <div class="container">
-      <h2 data-geo-content="How's the weather in %%region_name%%?">How's the weather?</h2>
+      <h2 class="geo-text">How's the weather?</h2>
+      <img class="geo-image" src="images/patriotic-dog.jpg" alt="" />
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="js/geocontent.js"></script>
     <script>
+
       $(document).ready(function(){
+<<<<<<< HEAD
         var geoContent = new GeoContent({
 <<<<<<< HEAD
           exclude: true,
           regions: ['CA']
 =======
 >>>>>>> master
+=======
+
+        GeoContent.change({
+          type: 'text',
+          element: $(".geo-text"),
+          content: "How's the weather in %%region_name%%?"
+>>>>>>> master
         });
+    
+        GeoContent.change({
+          type:'image',
+          element: $('.geo-image'),
+          content: [
+            {
+              region: "CA",
+              image: "images/california-dog.jpg"
+            }
+          ] 
+        });
+
+        GeoContent.init();
+        
       });
+
     </script>
  </body>
 </html>
