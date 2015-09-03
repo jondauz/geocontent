@@ -48,14 +48,8 @@ Here is a list of functions that can be used in the `onComplete` function which 
 #### GeoContent.changeText(Object)
 This function is used to change the text of an HTML element.
 
-option | Type | Default | Description
------- | ---- | ------- | -----------
-element (required) | $(element) |  null | The element in which you want content to change depending on location.
-template (required) | string |  null | The content that will replace the original content. "%%region_name%%" and "%%region_code%%" in the string will be replaces with the user's location region code or region name. Example: "How's the weather in %%region_name%%?" will end up reading, "How's the weather in California?" if you live in California. 
-regions (optional) | array |  null | An array of region codes, which is used to specify which "regions" will have their content changed. If no array of regions is given, then the content will change no matter what the region of the user. 
-exclude (optional) | boolean |  false | If exclude is true the regions array will be used as a list of regions to **not** change the content of. 
-
 Example: Code below will replace the content of all `<h2>` elements with the template value for all states that are not Nevada or California. 
+
 ```javascript
 GeoContent.init({
   onComplete: function() {
@@ -68,6 +62,12 @@ GeoContent.init({
   }
 });
 ```
+option | Type | Default | Description
+------ | ---- | ------- | -----------
+element (required) | $(element) |  null | The element in which you want content to change depending on location.
+template (required) | string |  null | The content that will replace the original content. **%%region_name%%** and **%%region_code%%** in the string will be replaces with the user's location region code or region name. Example: "How's the weather in %%region_name%%?" will end up reading, "How's the weather in California?" if you live in California. 
+regions (optional) | array |  null | An array of region codes, which is used to specify which "regions" will have their content changed. If no array of regions is given, then the content will change no matter what the region of the user. 
+exclude (optional) | boolean |  false | If exclude is true the regions array will be used as a list of regions to **not** change the content of. 
 
 
 
