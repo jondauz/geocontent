@@ -27,21 +27,17 @@
 
       $(document).ready(function(){
         
-         geoContent.init({
+         GeoContent.init({
           mygeourl: 'https://pin.berniesanders.com/json/',
           onComplete: function() {
 
-            geoContent.changeText({
+            GeoContent.changeText({
               element: $("h2"),
               template: "How's the weather in %%region_name%%?"
             });
-
-            // geoContent.changeText({
-            //   element: $("h3"),
-            //   template: "The weather in %%region_name%% is great!"
-            // });
           
           }
+        
         });
         
       });

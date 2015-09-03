@@ -1,12 +1,13 @@
-var geoContent = (function ($) {
+var GeoContent = (function ($) {
 
-    var geoContent = {};    
+    var geoContent = {},
+      getipurl =  "http://icanhazip.com/",
+      location = null;
+
 
     geoContent.settings = {
-      getipurl:  "http://icanhazip.com/",
       ip: null,
       mygeourl: 'https://freegeoip.net/json',
-      location: null,
       onComplete: null,
     }
   
@@ -19,10 +20,10 @@ var geoContent = (function ($) {
       if(!elemObject.regions) {
         updateContent(elemObject.element, elemObject.template);
       }
-      else if(elemObject.regions&&elemObject.regions.indexOf(geoContent.settings.location.region_code)>=0&&(!elemObject.exclude||elemObject.exclude==false)) {
+      else if(elemObject.regions&&elemObject.regions.indexOf(location.region_code)>=0&&(!elemObject.exclude||elemObject.exclude==false)) {
         updateContent(elemObject.element, elemObject.template);
       }
-      else if(elemObject.regions&&elemObject.regions.indexOf(geoContent.settings.location.region_code)==-1&&elemObject.exclude==true) {
+      else if(elemObject.regions&&elemObject.regions.indexOf(location.region_code)==-1&&elemObject.exclude==true) {
         updateContent(elemObject.element, elemObject.template);
       }
 
@@ -36,9 +37,9 @@ var geoContent = (function ($) {
 
     geoContent.init = function(options) {
      
-      $.extend(this.settings, options);
+      $.extend(geoContent.settings, options);
       
-      if(this.settings.ip) {
+      if(geoContent.settings.ip) {
         getLocation();
       } else {
         getUserIP();
@@ -50,12 +51,12 @@ var geoContent = (function ($) {
       
       var newText = "";
       // Change Region Code
-      if(template.indexOf('%%region_code%%')>0&&geoContent.settings.location.region_code!=='') {
-        newText = template.replace('%%region_code%%', geoContent.settings.location.region_code);
+      if(template.indexOf('%%region_code%%')>0&&location.region_code!=='') {
+        newText = template.replace('%%region_code%%', location.region_code);
       }
       // Change Region Name
-      else if(template.indexOf('%%region_name%%')>0&&geoContent.settings.location.region_name!=='') {
-        newText = template.replace('%%region_name%%', geoContent.settings.location.region_name);
+      else if(template.indexOf('%%region_name%%')>0&&location.region_name!=='') {
+        newText = template.replace('%%region_name%%', location.region_name);
       } 
       
       if(newText!=='') {
@@ -67,7 +68,7 @@ var geoContent = (function ($) {
     function getUserIP() {
 
       $.ajax({
-        url: geoContent.settings.getipurl
+        url: getipurl
       }).done(function(ip){ 
 
         geoContent.settings.ip = ip;
@@ -85,9 +86,9 @@ var geoContent = (function ($) {
 
     $.ajax({
       url: geoContent.settings.mygeourl + '/' + geoContent.settings.ip      
-    }).done(function(location){ 
+    }).done(function(userlocation){ 
 
-      geoContent.settings.location = location;
+      location = userlocation;
         
       if(geoContent.settings.onComplete) {
         geoContent.settings.onComplete();
