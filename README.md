@@ -14,60 +14,65 @@ GeoContent requires JQuery to be loaded. Include geocontent.js script after load
 <script src="/path/to/geocontent.js"></script>
 ```
 ## Setup and Initialization
-To use GeoContent you first need to initialize the plugin.  
+Before initilizing the plug-in you need to first set-up the plug-in with the content that needs to be localized. 
+### Setting up 
+Using the `change()` function you'll be able to add elements that need to be localized. 
 ```javascript
-GeoContent.init({
-  onComplete: function() {
-    // Change content code
-  }
+GeoContent.change({
+  type: text|image,
+  element: $(".element-to-localize"),
+  content: string|array,
 });
 ```
-The `GeoContent.init()` function requires an object, with an `onComplete` function, to be passed into the `GeoContent.init()` function. GeoContent also has other optional settings that can be included in the object. 
+### Changing Text
+```javascript
+GeoContent.change({
+  type: 'text',
+  element: $(".geo-text"),
+  content: "How's the weather in %%region_name%%?"
+});
+```
+option | Type | Default | Description
+------ | ---- | ------- | -----------
+type (required) | string | null | "text" or "image" are the possible choices. If you wish to localize text you would use "text". If you want to localize an image use "image".
+element (required)|$(element)|null| This is a jQuery selector of the element you wish to localize. 
+content (required)|string|null| When localizing  text using **%%region_name%%** and **%%region_code%%** in the string will be replaces with the user’s location region code or region name. Example: “How’s the weather in %%region_name%%?” will end up reading, “How’s the weather in California?” if you live in California.
+regions (optional) | array |  null | An array of region codes, which is used to specify which "regions" will have their content changed. If no array of regions is given, then the content will change no matter what the region of the user. 
+exclude (optional) | boolean |  false | If exclude is true the regions array will be used as a list of regions to **not** change the content of. 
+
+
+### Changing an Image 
+```javascript
+GeoContent.change({
+  type:'image',
+  element: $('.geo-image'),
+  content: [
+    {
+      region: "CA",
+      image: "images/california-dog.jpg"
+    }
+  ] 
+});
+```
+option | Type | Default | Description
+------ | ---- | ------- | -----------
+type (required) | string | null | "text" or "image" are the possible choices. If you wish to localize text you would use "text". If you want to localize an image use "image".
+element (required)|$(element)|null| This is a jQuery selector of the element you wish to localize. 
+content (required)|array|null| When localizing an image "content" must be an array of objects which contain "region" (string) and "image" (string). "region" represents what region should be shown this image should be shown. "image" represents the path of the new image.
+
+### Initialization
+After you set-up the plug-in you need to initialize the plug-in. 
+```javascript
+GeoContent.init({
+    ip: string,
+    mygeourl: string
+});
+```
 
 option | Type | Default | Description
 ------ | ---- | ------- | -----------
 ip (optional) | string | null | Rather then having plug-in retreive your IP, you can pass in an IP instead.
 mygeourl (optional)|string|null| freegeoip provides a way for developers to create there own webserver using the freegeoip code. If you've created your own webserver you can pass the url to the API using this option.
-
-## Using GeoContent
-In order to ensure that IP and location has been received, changing of content is done in the `onComplete` function of the plug-ing initialization. 
-```javascript
-GeoContent.init({
-  onComplete: function() {
-    GeoContent.changeText({
-      element: $("h2"),
-      template: "How's the weather in %%region_name%%?"
-    });
-  }
-});
-```
-GeoContent as a few function that you can use in order to change the content depending on location. Eacb function accepts an object which tells the plug-in, amongst other things, what content to change and what to change the content to. 
-
-## Functions
-Here is a list of functions that can be used in the `onComplete` function which will usd to change the content depending on user's location. 
-#### GeoContent.changeText(Object)
-This function is used to change the text of an HTML element.
-
-Example: Code below will replace the content of all `<h2>` elements with the template value for all states that are not Nevada or California. 
-
-```javascript
-GeoContent.init({
-  onComplete: function() {
-    GeoContent.changeText({
-      element: $("h2"),
-      template: "How's the weather in %%region_name%%?"
-      regions: ['CA','NV'],
-      exclude: true
-    });
-  }
-});
-```
-option | Type | Default | Description
------- | ---- | ------- | -----------
-element (required) | $(element) |  null | The element in which you want content to change depending on location.
-template (required) | string |  null | The content that will replace the original content. **%%region_name%%** and **%%region_code%%** in the string will be replaces with the user's location region code or region name. Example: "How's the weather in %%region_name%%?" will end up reading, "How's the weather in California?" if you live in California. 
-regions (optional) | array |  null | An array of region codes, which is used to specify which "regions" will have their content changed. If no array of regions is given, then the content will change no matter what the region of the user. 
-exclude (optional) | boolean |  false | If exclude is true the regions array will be used as a list of regions to **not** change the content of. 
 
 
 

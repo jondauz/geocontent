@@ -3,22 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>geocontent</title>
+    <title>GeoContent</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-      h2 {
+      .container {
+        padding-top: 50px;
+      }
+      h2.geo-text {
         text-align: center;
         opacity: 0;
-        padding: 15% 0;
+      }
+      img.geo-image {
+        display: block;
+        margin: 0 auto;
+        opacity: 0;
       }
     </style>
   </head>
   <body>
     
     <div class="container">
-      <h2 class="geo-content">How's the weather?</h2>
-      <img class="geo-image" src="" alt="" />
+      <h2 class="geo-text">How's the weather?</h2>
+      <img class="geo-image" src="images/patriotic-dog.jpg" alt="" />
     </div>
 
     <script src="bower_components/jquery/jquery.min.js"></script>
@@ -26,17 +33,26 @@
     <script>
 
       $(document).ready(function(){
-        
-         GeoContent.init({
-          onComplete: function() {
 
-            GeoContent.changeText({
-              element: $(".geo-content"),
-              template: "How's the weather in %%region_name%%?"
-            });
-        
-          }
-        
+        GeoContent.change({
+          type: 'text',
+          element: $(".geo-text"),
+          content: "How's the weather in %%region_name%%?"
+        });
+    
+        GeoContent.change({
+          type:'image',
+          element: $('.geo-image'),
+          content: [
+            {
+              region: "CA",
+              image: "images/california-dog.jpg"
+            }
+          ] 
+        });
+
+        GeoContent.init({
+          mygeourl: 'https://pin.berniesanders.com/json/'        
         });
         
       });
