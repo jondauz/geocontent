@@ -4,7 +4,11 @@ GeoContent
 GeoContent provides the ability to change content depending on location. First, GeoContent uses [icanhazip.com](https://major.io/icanhazip-com-faq/) to retreive the user's IP and then uses [freegeoip](http://freegeoip.net/) to get user's location from the user's IP.
 
 ## Installation
-GeoContent requires JQuery to be loaded. Include geocontent.js script after loading JQuery. 
+Bower installation 
+```javascript
+bower install geocontent
+```
+GeoContent requires JQuery to be loaded. Include geocontent.js script after loading JQuery.
 ```javascript
 <script src="/path/to/jquery.min.js"></script>
 <script src="/path/to/geocontent.js"></script>
@@ -64,4 +68,8 @@ GeoContent.init({
   }
 });
 ```
+
+
+
+
 
