@@ -1,13 +1,5 @@
 var GeoContent = (function ($) {
 
-<<<<<<< HEAD
-	// Hide content that will be changed
-<<<<<<< HEAD
-	var geoContentElems = $('[data-geo-content]');
-  geoContentElems.css('opacity','0');
-=======
-	var geoContentElems = $('[data-geo-content]').css('opacity','0');
-=======
   var geoContent = {},
     getipurl =  "http://icanhazip.com/",
     location = null,
@@ -18,17 +10,10 @@ var GeoContent = (function ($) {
     mygeourl: 'https://freegeoip.net/json',
     onComplete: null,
   }
->>>>>>> master
 
   $.ajaxSetup({
-<<<<<<< HEAD
-    timeout: 4000
-  });
->>>>>>> master
-=======
     timeout: 3000
   }); 
->>>>>>> master
 
   geoContent.change = function(elemObject) {
 
