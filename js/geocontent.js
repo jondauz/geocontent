@@ -12,7 +12,7 @@ var GeoContent = (function ($) {
     }
   
     $.ajaxSetup({
-      timeout: 4000
+      timeout: 10000
     }); 
 
     geoContent.changeText = function (elemObject) {
@@ -31,8 +31,8 @@ var GeoContent = (function ($) {
 
     };
 
-    geoContent.changeImage = function() {
-      /* TO-DO: Create Change Image */
+    geoContent.changeImage = function(elemObject) {
+      
     };
 
     geoContent.init = function(options) {

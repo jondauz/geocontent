@@ -17,25 +17,24 @@
   <body>
     
     <div class="container">
-      <h2>How's the weather?</h2>
-<!--       <h3>This weather is great!</h3> -->
+      <h2 class="geo-content">How's the weather?</h2>
+      <img class="geo-image" src="" alt="" />
     </div>
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="js/geocontent.js"></script>
     <script>
 
       $(document).ready(function(){
         
          GeoContent.init({
-          mygeourl: 'https://pin.berniesanders.com/json/',
           onComplete: function() {
 
             GeoContent.changeText({
-              element: $("h2"),
+              element: $(".geo-content"),
               template: "How's the weather in %%region_name%%?"
             });
-          
+        
           }
         
         });
