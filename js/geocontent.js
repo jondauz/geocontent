@@ -118,6 +118,8 @@ var GeoContent = (function ($) {
     }).done(function(userlocation){ 
 
       location = userlocation;
+      
+      $('body').addClass(location.region_code);
       changeContent();
 
     }).error(function(error){
