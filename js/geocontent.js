@@ -17,7 +17,9 @@ var GeoContent = (function ($) {
 
   geoContent.change = function(elemObject) {
 
+    elemObject.element.css('opacity',0);
     elemsToLocalize.push(elemObject);
+
 
   }
 
@@ -44,8 +46,6 @@ var GeoContent = (function ($) {
     else if(elemObject.regions&&elemObject.regions.indexOf(location.region_code)==-1&&elemObject.exclude==true) {
       updateContent(elemObject.element, elemObject.content);
     }
-
-    elemObject.element.css('opacity','1');
 
   }
 
@@ -85,12 +85,15 @@ var GeoContent = (function ($) {
     // Change Region Name
     else if(template.indexOf('%%region_name%%')>0&&location.region_name!=='') {
       newText = template.replace('%%region_name%%', location.region_name);
-    } 
+    } else {
+      newText = template;
+    }
     
-    if(newText!=='') {
+    if(newText!=="") {
       elem.text(newText);
     }
-   
+    elem.css('opacity','1');
+ 
   }
 
   function getUserIP() {
