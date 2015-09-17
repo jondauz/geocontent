@@ -1,13 +1,13 @@
 var GeoContent = (function ($) {
 
   var geoContent = {},
-    getipurl =  "http://icanhazip.com/",
+    getipurl =  "//icanhazip.com/",
     location = null,
     elemsToLocalize = [];
 
   geoContent.settings = {
     ip: null,
-    mygeourl: 'https://freegeoip.net/json',
+    mygeourl: '//freegeoip.net/json',
     onComplete: null,
   }
 
@@ -17,9 +17,7 @@ var GeoContent = (function ($) {
 
   geoContent.change = function(elemObject) {
 
-    elemObject.element.css('opacity',0);
     elemsToLocalize.push(elemObject);
-
 
   }
 
@@ -58,13 +56,9 @@ var GeoContent = (function ($) {
         if(value.region===location.region_code) {
           elemObject.element.attr('src',value.image);
           elemObject.element.load(function(){
-            elemObject.element.css('opacity','1');
+           // elemObject.element.css('opacity','1');
           });
           return;
-        }
-
-        if(elemObject.content.length-1===index) {
-          elemObject.element.css('opacity','1');        
         }
 
       });
@@ -92,8 +86,7 @@ var GeoContent = (function ($) {
     if(newText!=="") {
       elem.text(newText);
     }
-    elem.css('opacity','1');
- 
+  
   }
 
   function getUserIP() {
@@ -107,8 +100,8 @@ var GeoContent = (function ($) {
      
      }).error(function(){
 
+      $('body').addClass('geocontent');
       showError('Unable to get IP.');
-      showElements();
     
     });
 
@@ -122,13 +115,14 @@ var GeoContent = (function ($) {
 
       location = userlocation;
       
-      $('body').addClass(location.region_code);
+      $('body').addClass('geocontent-region-'+location.region_code);
+      $('body').addClass('geocontent-initialized');
       changeContent();
 
     }).error(function(error){
      
+      $('body').addClass('geocontent-initialized');
       showError('Unable to get geolocate.');
-      showElements();
     
     });
 
@@ -156,17 +150,11 @@ var GeoContent = (function ($) {
         }
 
       }
+
+      if(index===(elemsToLocalize.length-1)) {
+        $('body').addClass('geocontent-initialized');
+      }
      
-    });
-
-  }
-
-  function showElements() {
-
-    $.each(elemsToLocalize, function(index, value){
-      
-      value.element.css('opacity','1');
-
     });
 
   }
